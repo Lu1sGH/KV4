@@ -8,6 +8,7 @@ package kerberosv4;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ThreadLocalRandom;
 /**
  *
  * @author Axel Zarate Lozano
@@ -19,45 +20,20 @@ public class KerberosV4 {
      */
     public static void main(String[] args) {
         
-        Timestamp ts = timeSignature();
-        String tsS = timeSignatureInString();
-        Timestamp tsT = string2TimeStamp(tsS);
-        System.out.println( timeSignatureInString() );
-        System.out.println( timeStamp2String(ts) );
-        System.out.println( timeStamp2String(tsT) );
+        String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        String cadena = "";
+        for (int x = 0; x < 32; x++) {
+            int indiceAleatorio = numeroAleatorioEnRango(0, banco.length() - 1);
+            char caracterAleatorio = banco.charAt(indiceAleatorio);
+            cadena += caracterAleatorio;
+        }
+        
+        System.out.println(cadena);
         
     }
-    
-    public static Timestamp timeSignature(){
-        return Timestamp.from(Instant.now());
-    }
 
-    public static String timeSignatureInString() {
-        return timeSignature().toString();
-    }
-
-    public static String timeStamp2String(Timestamp timestamp) {
-        return DateTimeFormatter.ISO_DATE_TIME.format(timestamp.toLocalDateTime());
-    }
-
-    public static Timestamp string2TimeStamp(String timeStampValue) {
-        return Timestamp.valueOf(timeStampValue);
-    }
-
-    public static Long getMillis(int days, int hours, int minutes, int seconds) {
-        return getMillis((days * 24) + hours, minutes, seconds);
-    }
-
-    public static Long getMillis(int hours, int minutes, int seconds) {
-        return getMillis((hours * 60) + minutes, seconds);
-    }
-
-    public static Long getMillis(int minutes, int seconds) {
-        return getMillis((minutes * 60) + seconds);
-    }
-
-    public static Long getMillis(int seconds) {
-        return seconds * 1000L;
+    public static int numeroAleatorioEnRango(int minimo, int maximo) {
+        return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
     }
     
 }
