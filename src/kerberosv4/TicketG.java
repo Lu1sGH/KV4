@@ -13,6 +13,8 @@ public class TicketG {
     }
     
     public TicketC geneByCif(SecretKey cS, TicketC tickt) throws Exception{
+        this.ticket = new TicketC();
+        this.cif = new Cifrador();
         this.ticket.setcS( this.cif.Principal(cS, tickt.getcS()) );
         this.ticket.setIdC( this.cif.Principal(cS, tickt.getcS()) );
         this.ticket.setAdC( this.cif.Principal(cS, tickt.getcS()) );
@@ -23,6 +25,8 @@ public class TicketG {
     }
     
     public TicketC geneByDesc(TicketC ticketCif, SecretKey cS) throws Exception{
+        this.ticket = new TicketC();
+        this.desc = new Descifrador();
         this.ticket.setcS( this.desc.Principal(cS, ticketCif.getcS()) ); 
         this.ticket.setIdC( this.desc.Principal(cS, ticketCif.getIdC()) );
         this.ticket.setAdC( this.desc.Principal(cS, ticketCif.getAdC()) );

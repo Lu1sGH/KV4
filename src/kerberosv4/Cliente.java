@@ -6,7 +6,12 @@ import javax.crypto.SecretKey;
 
 public class Cliente {
     
-    public static void main(String[] args) {
+    public static void main(String[] pollis) {
+        
+        String[] args = new String[4];
+        for (int i = 0; i < 3; i++) {
+            args[i] = "192.168.10.101";
+        }
         
         try{
             
@@ -31,7 +36,7 @@ public class Cliente {
                 final String ipS = args[3];
                 
                 
-                final String cSCString = "aIZUAB7ywP2W1H3EB2ciT9bpgA8xyLNT";
+                final String cSCString = "3In01vf+l5I=";
                 SecretKey cSC = null;
                 SecretKey cS_CTGS = null;
                 SecretKey cS_CS = null;
@@ -75,13 +80,13 @@ public class Cliente {
                 
                 
                 if( idTGS.equals(idTGSR)){
-                    aut.setIdC( cif.Principal(cS_CTGS, idTGSR) );
+                    aut.setIdC( cif.Principal(cS_CTGS, idC) );
                     aut.setAdC( cif.Principal(cS_CTGS, ipC) );
                     aut.settS( cif.Principal( cS_CTGS, tsObj.tiempo().toString() ) );
                     
-                    emisor.enviarS(ipTGS, pTGS, idS);
-                    emisor.enviarT(ticket, ipTGS, pTGS);
-                    emisor.enviarA(aut, ipTGS, pTGS);
+                    emisor.enviarS(ipTGS, pC, idS);
+                    emisor.enviarT(ticket, ipTGS, pC);
+                    emisor.enviarA(aut, ipTGS, pC);
                 }
                 else{
                     System.out.println("No se logro la autentificacion.");
@@ -94,7 +99,9 @@ public class Cliente {
                 
                 
                 if(idSR.equals(idS)){
-                    aut.settS( cif.Principal( cS_CTGS, tsObj.tiempo().toString() ) );
+                    aut.setIdC( cif.Principal(cS_CS, idC) );
+                    aut.setAdC( cif.Principal(cS_CS, ipC) );
+                    aut.settS( cif.Principal( cS_CS, tsObj.tiempo().toString() ) );
                     
                     emisor.enviarT(ticket, ipS, pS);
                     emisor.enviarA(aut, ipS, pS);

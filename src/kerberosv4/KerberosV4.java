@@ -5,10 +5,16 @@
  */
 package kerberosv4;
 
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 /**
  *
  * @author Axel Zarate Lozano
@@ -18,22 +24,17 @@ public class KerberosV4 {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchAlgorithmException {
         
-        String banco = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        String cadena = "";
-        for (int x = 0; x < 32; x++) {
-            int indiceAleatorio = numeroAleatorioEnRango(0, banco.length() - 1);
-            char caracterAleatorio = banco.charAt(indiceAleatorio);
-            cadena += caracterAleatorio;
-        }
-        
+        SecretKey yo = KeyGenerator.getInstance("DES").generateKey();
+        String cadena = convertAnyKey2String(yo);
         System.out.println(cadena);
         
     }
-
-    public static int numeroAleatorioEnRango(int minimo, int maximo) {
-        return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
+    
+    public static String convertAnyKey2String(Key key) {
+        byte[] keyEncoded = key.getEncoded();
+        return Base64.getEncoder().encodeToString(keyEncoded);
     }
     
 }

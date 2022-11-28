@@ -6,7 +6,12 @@ import javax.crypto.SecretKey;
 
 public class Servidor {
     
-    public static void main(String[] args) {
+    public static void main(String[] pollis) {
+        
+        String[] args = new String[4];
+        for (int i = 0; i < 3; i++) {
+            args[i] = "192.168.10.101";
+        }
         
         try{
             
@@ -31,12 +36,12 @@ public class Servidor {
                 final String ipS = args[3];
                 
                 
-                final String cSTGSString = "PBT2uOvLfnwCgSo9Nd9ClPafUJ9T2NyP";
+                final String cSTGSString = "L0NPC0leCEM=";
                 SecretKey cSTGS = null;
-                final String cSSString = "N0wlzXd0z6iT3KHU0bmsdkqmempQausc";
+                final String cSSString = "PqglfyUZ1TQ=";
                 SecretKey cSS = null;
                 SecretKey cS_CTGS = null;
-                String cS_CS = null;
+                SecretKey cS_CS = null;
                 
                 
                 String idASR = null;
@@ -65,8 +70,25 @@ public class Servidor {
                 aut = receptor.recibirA(pS);
                 
                 ticket = ticketG.geneByDesc(ticket, cSS);
+                cS_CS = genCS.cS( ticket.getcS() );
+                
+                aut.setIdC( descif.Principal( cS_CS, aut.getIdC() ) );
+                aut.setAdC( descif.Principal( cS_CS, aut.getAdC() ) );
+                aut.settS( descif.Principal( cS_CS, aut.gettS() ) );
+                
+                tLife = tsObj.SaTS( ticket.getLifeTime() );
+                tS = tsObj.tiempo();
+                
+                if(tS.compareTo(tLife) < 0 && aut.getIdC().equals(ticket.getIdC()) && aut.getAdC().equals(ticket.getAdC())){
+                    tLife = new Timestamp(tS.getTime() + tsObj.tl(5,0));
+                    tLString = cif.Principal(cS_CS, tLife.toString());
+                    String msj = process();
+                    
+                    emisor.enviarS(ipC, pS, tLString);
+                    emisor.enviarS(ipC, pS, msj);
+                }
             }
-            
+            System.out.println("Servidor finalizado");
         }
         catch(Exception ex){
             ex.printStackTrace();

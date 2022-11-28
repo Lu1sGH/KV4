@@ -6,7 +6,12 @@ import javax.crypto.SecretKey;
 
 public class TGS {
     
-    public static void main(String[] args) {
+    public static void main(String[] pollis) {
+        
+        String[] args = new String[4];
+        for (int i = 0; i < 3; i++) {
+            args[i] = "192.168.10.101";
+        }
         
         try{
             
@@ -31,9 +36,9 @@ public class TGS {
                 final String ipS = args[3];
                 
                 
-                final String cSTGSString = "PBT2uOvLfnwCgSo9Nd9ClPafUJ9T2NyP";
+                final String cSTGSString = "L0NPC0leCEM=";
                 SecretKey cSTGS = null;
-                final String cSSString = "N0wlzXd0z6iT3KHU0bmsdkqmempQausc";
+                final String cSSString = "PqglfyUZ1TQ=";
                 SecretKey cSS = null;
                 SecretKey cS_CTGS = null;
                 String cS_CS = null;
@@ -63,10 +68,9 @@ public class TGS {
                 cSS = genCS.cS(cSSString);
                 
                 idSR = receptor.recibirS(pC);
-                ticket = receptor.recibirT(pC);
+                ticket = ticketG.geneByDesc( receptor.recibirT(pC), cSTGS );
                 aut = receptor.recibirA(pC);
                 
-                ticket = ticketG.geneByDesc(ticket, cSTGS);
                 cS_CTGS = genCS.cS( ticket.getcS() );
                 
                 aut.setIdC( descif.Principal( cS_CTGS, aut.getIdC() ) );
@@ -77,7 +81,7 @@ public class TGS {
                 tS = tsObj.tiempo();
                 
                 if(tS.compareTo(tLife) < 0 && aut.getIdC().equals(ticket.getIdC()) && aut.getAdC().equals(ticket.getAdC())){
-                    cS_CS = aut.getIdC() + idS;
+                    cS_CS = "H5ElFb8EJlE=";
                     tS = tsObj.tiempo();
                     tLife = new Timestamp(tS.getTime() + tsObj.tl(5,0));
                     tSString = tS.toString();
@@ -102,7 +106,7 @@ public class TGS {
                 
                 
             }
-            
+            System.out.println("TGS finalizado");
         }
         catch(Exception ex){
             ex.printStackTrace();

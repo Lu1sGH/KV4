@@ -6,7 +6,12 @@ import javax.crypto.SecretKey;
 
 public class AS {
     
-    public static void main(String[] args) {
+    public static void main(String[] pollis) {
+        
+        String[] args = new String[4];
+        for (int i = 0; i < 3; i++) {
+            args[i] = "192.168.10.101";
+        }
         
         try{
             
@@ -31,9 +36,9 @@ public class AS {
                 final String ipS = args[3];
                 
                 
-                final String cSCString = "aIZUAB7ywP2W1H3EB2ciT9bpgA8xyLNT";
+                final String cSCString = "3In01vf+l5I=";
                 SecretKey cSC = null;
-                final String cSTGSString = "PBT2uOvLfnwCgSo9Nd9ClPafUJ9T2NyP";
+                final String cSTGSString = "L0NPC0leCEM=";
                 SecretKey cSTGS = null;
                 String cS_CTGS = null;
                 SecretKey cS_CS = null;
@@ -68,7 +73,7 @@ public class AS {
                 tSString = receptor.recibirS(pAS);
                 
                 if (idC.equals(idCR) && idTGS.equals(idTGS)) {
-                    cS_CTGS = idC + idTGS;
+                    cS_CTGS = "6QSULOl2hTE=";
                     tS = tsObj.tiempo();
                     tLife = new Timestamp(tS.getTime() + tsObj.tl(5,0));
                     tSString = tS.toString();
@@ -87,6 +92,8 @@ public class AS {
                     emisor.enviarS(ipC, pC, tSString);
                     emisor.enviarS(ipC, pC, tLString);
                     emisor.enviarT(ticket, ipC, pC);
+                    
+                    System.out.println("AS finalizado");
                 }
                 else{
                     System.out.println("No se concedieron permisos.");
