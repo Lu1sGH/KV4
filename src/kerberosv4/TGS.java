@@ -10,7 +10,7 @@ public class TGS {
         
         String[] args = new String[4];
         for (int i = 0; i < 3; i++) {
-            args[i] = "192.168.10.101";
+            args[i] = "10.226.164.86";
         }
         
         try{
@@ -38,7 +38,7 @@ public class TGS {
                 
                 final String cSTGSString = "L0NPC0leCEM=";
                 SecretKey cSTGS = null;
-                final String cSSString = "PqglfyUZ1TQ=";
+                final String cSSString = "vAfZAimu8hk=";
                 SecretKey cSS = null;
                 SecretKey cS_CTGS = null;
                 String cS_CS = null;
@@ -67,9 +67,11 @@ public class TGS {
                 cSTGS = genCS.cS(cSTGSString);
                 cSS = genCS.cS(cSSString);
                 
-                idSR = receptor.recibirS(pC);
-                ticket = ticketG.geneByDesc( receptor.recibirT(pC), cSTGS );
-                aut = receptor.recibirA(pC);
+                idSR = receptor.recibirS(ipC, pTGS);
+                ticket = receptor.recibirT(ipC, pTGS);
+                aut = receptor.recibirA(ipC, pTGS);
+                
+                ticket = ticketG.geneByDesc(ticket, cSTGS);
                 
                 cS_CTGS = genCS.cS( ticket.getcS() );
                 
@@ -81,27 +83,28 @@ public class TGS {
                 tS = tsObj.tiempo();
                 
                 if(tS.compareTo(tLife) < 0 && aut.getIdC().equals(ticket.getIdC()) && aut.getAdC().equals(ticket.getAdC())){
-                    cS_CS = "H5ElFb8EJlE=";
+                    cS_CS = "AfhYubU+I/c=";
                     tS = tsObj.tiempo();
                     tLife = new Timestamp(tS.getTime() + tsObj.tl(5,0));
                     tSString = tS.toString();
                     tLString = tLife.toString();
                     
-                    ticket.setcS( cif.Principal( cSS, cS_CS)) ;
-                    ticket.setIdC( cif.Principal(cSS, aut.getIdC()) );
-                    ticket.setAdC( cif.Principal(cSS, ipC) );
-                    ticket.setIdTGSoV( cif.Principal(cSS, idS) );
-                    ticket.settS( cif.Principal(cSS, tSString) );
-                    ticket.setLifeTime( cif.Principal(cSS, tLString) );
+                    ticket.setcS(cS_CS);
+                    ticket.setIdC(aut.getIdC());
+                    ticket.setAdC(ipC);
+                    ticket.setIdTGSoV(idS);
+                    ticket.settS(tSString);
+                    ticket.setLifeTime( tLString );                    
+                    ticket = ticketG.geneByCif(cSS, ticket);                   
                     ticket = ticketG.geneByCif(cS_CTGS, ticket);
                     
-                    emisor.enviarS(ipC, pC, cS_CS);
-                    emisor.enviarS(ipC, pC, idS);
-                    emisor.enviarS(ipC, pC, tSString);
-                    emisor.enviarT(ticket, ipC, pC);
+                    emisor.enviarS(pTGS, cif.Principal(cS_CTGS, cS_CS));
+                    emisor.enviarS(pTGS, cif.Principal(cS_CTGS, idS));
+                    emisor.enviarS(pTGS, cif.Principal(cS_CTGS,tSString));
+                    emisor.enviarT(ticket, pTGS);
                 }
                 else{
-                    System.out.println("Alguno de los datos no coinciden.");
+                    System.out.println("Alguno de los datos no coinciden y se ha rechazado la conexion.");
                 }
                 
                 

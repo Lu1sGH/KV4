@@ -8,17 +8,15 @@ public class RECEPTOR{
     public RECEPTOR(){
     }
     
-    public String recibirS(String p){
+    public String recibirS(String ip, String p){
         try {
-            int puerto = Integer.parseInt(p);
-            ServerSocket sSocket = new ServerSocket(puerto);
-            Socket socket = sSocket.accept();
-            InputStream entrada = socket.getInputStream();
-            BufferedReader entradaS = new BufferedReader(new InputStreamReader(entrada));
-            String toR = entradaS.readLine();
-            entrada.close();
-            socket.close();
-            sSocket.close();
+            InetAddress maquinaAceptadora = InetAddress.getByName(ip);
+            int puertoAceptador = Integer.parseInt(p);
+            Socket miSocket = new Socket(maquinaAceptadora, puertoAceptador);
+            InputStream flujoEntrada = miSocket.getInputStream();
+            BufferedReader socketInput = new BufferedReader(new InputStreamReader(flujoEntrada));
+            String toR = socketInput.readLine();
+            miSocket.close();
             return toR;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -26,12 +24,12 @@ public class RECEPTOR{
         }
     }
     
-    public TicketC recibirT(String p){
+    public TicketC recibirT(String ip, String p){
         try {
             
             String[] flujo = new String[6];
             for (int i = 0; i < flujo.length; i++) {
-                flujo[i] = recibirS(p);
+                flujo[i] = recibirS(ip, p);
             }
             TicketC toR = new TicketC();
             toR.setcS(flujo[0]);
@@ -47,11 +45,11 @@ public class RECEPTOR{
         }
     }
     
-    public AutenticadorC recibirA(String p){
+    public AutenticadorC recibirA(String ip, String p){
         try {
             String[] flujo = new String[3];
             for (int i = 0; i < flujo.length; i++) {
-                flujo[i] = recibirS(p);
+                flujo[i] = recibirS(ip, p);
             }
             AutenticadorC toR = new AutenticadorC();
             toR.setIdC(flujo[0]);

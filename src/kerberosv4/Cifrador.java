@@ -16,6 +16,7 @@ public class Cifrador {
 
     }
 
+    
     public String Principal(SecretKey cS, String t) throws Exception {
         
         this.claveSecreta = cS;

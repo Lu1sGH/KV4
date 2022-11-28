@@ -2,6 +2,7 @@
 package kerberosv4;
 
 import java.sql.Timestamp;
+import java.util.Scanner;
 import javax.crypto.SecretKey;
 
 public class Cliente {
@@ -10,7 +11,7 @@ public class Cliente {
         
         String[] args = new String[4];
         for (int i = 0; i < 3; i++) {
-            args[i] = "192.168.10.101";
+            args[i] = "10.226.164.86";
         }
         
         try{
@@ -61,22 +62,27 @@ public class Cliente {
                 Timestamp tLife = null;
                 String tSString = null;
                 String tLString = null;
-                
+                Scanner leer = new Scanner(System.in);
                 
                 cSC = genCS.cS(cSCString);
                 
+                System.out.println("Ingrese el usuario:");
+                String user = leer.nextLine();
+                System.out.println("Ingrese contraseña:");
+                String pass = leer.nextLine();
                 
                 tSString = tsObj.tiempo().toString();
-                emisor.enviarS(ipAS, pAS, idC);
-                emisor.enviarS(ipAS, pAS, idTGS);
-                emisor.enviarS(ipAS, pAS, tSString);
+                emisor.enviarS(pAS, idC);
+                emisor.enviarS(pAS, idTGS);
+                emisor.enviarS(pAS, tSString);
                 
-                
-                cS_CTGS = genCS.cS( descif.Principal(cSC, receptor.recibirS(pAS)) );
-                idTGSR = descif.Principal(cSC, receptor.recibirS(pAS));
-                tSString = descif.Principal(cSC, receptor.recibirS(pAS));
-                tLString = descif.Principal(cSC, receptor.recibirS(pAS));
-                ticket = ticketG.geneByDesc(receptor.recibirT(pAS), cSC);
+                String csctgs = receptor.recibirS(ipAS, pAS);
+                cS_CTGS = genCS.cS( descif.Principal(cSC, csctgs) );
+                idTGSR = descif.Principal(cSC, receptor.recibirS(ipAS, pAS));
+                tSString = descif.Principal(cSC, receptor.recibirS(ipAS, pAS));
+                tLString = descif.Principal(cSC, receptor.recibirS(ipAS, pAS));
+                ticket = receptor.recibirT(ipAS, pAS);
+                ticket = ticketG.geneByDesc(ticket, cSC);
                 
                 
                 if( idTGS.equals(idTGSR)){
@@ -84,34 +90,35 @@ public class Cliente {
                     aut.setAdC( cif.Principal(cS_CTGS, ipC) );
                     aut.settS( cif.Principal( cS_CTGS, tsObj.tiempo().toString() ) );
                     
-                    emisor.enviarS(ipTGS, pC, idS);
-                    emisor.enviarT(ticket, ipTGS, pC);
-                    emisor.enviarA(aut, ipTGS, pC);
+                    emisor.enviarS(pTGS, idS);
+                    emisor.enviarT(ticket, pTGS);
+                    emisor.enviarA(aut, pTGS);
                 }
                 else{
                     System.out.println("No se logro la autentificacion.");
                 }
                 
-                cS_CS = genCS.cS( descif.Principal(cS_CTGS, receptor.recibirS(pTGS)) );
-                idSR = descif.Principal(cS_CTGS, receptor.recibirS(pTGS));
-                tSString = descif.Principal(cS_CTGS, receptor.recibirS(pTGS));
-                ticket = ticketG.geneByDesc(receptor.recibirT(pTGS), cS_CTGS);
+                cS_CS = genCS.cS( descif.Principal(cS_CTGS, receptor.recibirS(ipTGS, pTGS)) );
+                idSR = descif.Principal(cS_CTGS, receptor.recibirS(ipTGS, pTGS));
+                tSString = descif.Principal(cS_CTGS, receptor.recibirS(ipTGS, pTGS));
+                ticket = receptor.recibirT(ipTGS, pTGS);
+                ticket = ticketG.geneByDesc(ticket, cS_CTGS);
                 
                 
                 if(idSR.equals(idS)){
                     aut.setIdC( cif.Principal(cS_CS, idC) );
                     aut.setAdC( cif.Principal(cS_CS, ipC) );
-                    aut.settS( cif.Principal( cS_CS, tsObj.tiempo().toString() ) );
+                    aut.settS( cif.Principal(cS_CS, tsObj.tiempo().toString() ) );
                     
-                    emisor.enviarT(ticket, ipS, pS);
-                    emisor.enviarA(aut, ipS, pS);
+                    emisor.enviarT(ticket, pS);
+                    emisor.enviarA(aut, pS);
                 }
                 else{
                     System.out.println("No se logro la autentificacion.");
                 }
                 
-                tSString = receptor.recibirS( descif.Principal(cS_CS, receptor.recibirS(pS)) );
-                String msj = receptor.recibirS(pS);
+                tSString = descif.Principal( cS_CS, receptor.recibirS(ipS, pS) );
+                String msj = receptor.recibirS(ipS, pS);
                 
                 System.out.println("Último TimeStamp + 5min: ");
                 System.out.println(tSString);

@@ -16,11 +16,11 @@ public class TicketG {
         this.ticket = new TicketC();
         this.cif = new Cifrador();
         this.ticket.setcS( this.cif.Principal(cS, tickt.getcS()) );
-        this.ticket.setIdC( this.cif.Principal(cS, tickt.getcS()) );
-        this.ticket.setAdC( this.cif.Principal(cS, tickt.getcS()) );
-        this.ticket.setIdTGSoV( this.cif.Principal(cS, tickt.getcS()) );
-        this.ticket.settS( this.cif.Principal(cS, tickt.getcS()) );
-        this.ticket.setLifeTime( this.cif.Principal(cS, tickt.getcS()) );
+        this.ticket.setIdC( this.cif.Principal(cS, tickt.getIdC()) );
+        this.ticket.setAdC( this.cif.Principal(cS, tickt.getAdC()) );
+        this.ticket.setIdTGSoV( this.cif.Principal(cS, tickt.getIdTGSoV()) );
+        this.ticket.settS( this.cif.Principal(cS, tickt.gettS()) );
+        this.ticket.setLifeTime( this.cif.Principal(cS, tickt.getLifeTime()) );
         return this.ticket;
     }
     

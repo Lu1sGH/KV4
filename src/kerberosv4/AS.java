@@ -10,7 +10,7 @@ public class AS {
         
         String[] args = new String[4];
         for (int i = 0; i < 3; i++) {
-            args[i] = "192.168.10.101";
+            args[i] = "10.226.164.86";
         }
         
         try{
@@ -67,10 +67,9 @@ public class AS {
                 
                 cSC = genCS.cS(cSCString);
                 cSTGS = genCS.cS(cSTGSString);
-                
-                idCR = receptor.recibirS(pAS);
-                idTGSR = receptor.recibirS(pAS);
-                tSString = receptor.recibirS(pAS);
+                idCR = receptor.recibirS(ipAS, pAS);
+                idTGSR = receptor.recibirS(ipAS, pAS);
+                tSString = receptor.recibirS(ipAS, pAS);
                 
                 if (idC.equals(idCR) && idTGS.equals(idTGS)) {
                     cS_CTGS = "6QSULOl2hTE=";
@@ -79,21 +78,23 @@ public class AS {
                     tSString = tS.toString();
                     tLString = tLife.toString();
                     
-                    ticket.setcS( cif.Principal( cSTGS, cS_CTGS)) ;
-                    ticket.setIdC( cif.Principal(cSTGS, idC) );
-                    ticket.setAdC( cif.Principal(cSTGS, ipC) );
-                    ticket.setIdTGSoV( cif.Principal(cSTGS, idTGS) );
-                    ticket.settS( cif.Principal(cSTGS, tSString) );
-                    ticket.setLifeTime( cif.Principal(cSTGS, tLString) );
+                    ticket.setcS(cS_CTGS);
+                    ticket.setIdC(idC);
+                    ticket.setAdC(ipC);
+                    ticket.setIdTGSoV(idTGS);
+                    ticket.settS(tSString);
+                    ticket.setLifeTime(tLString);
+                    ticket = ticketG.geneByCif(cSTGS, ticket);
                     ticket = ticketG.geneByCif(cSC, ticket);
                     
-                    emisor.enviarS(ipC, pC, cS_CTGS);
-                    emisor.enviarS(ipC, pC, idTGS);
-                    emisor.enviarS(ipC, pC, tSString);
-                    emisor.enviarS(ipC, pC, tLString);
-                    emisor.enviarT(ticket, ipC, pC);
                     
-                    System.out.println("AS finalizado");
+                    emisor.enviarS(pAS, cif.Principal( cSC, cS_CTGS) );
+                    emisor.enviarS(pAS, cif.Principal( cSC, idTGS) );
+                    emisor.enviarS(pAS, cif.Principal( cSC, tSString));
+                    emisor.enviarS(pAS, cif.Principal( cSC, tLString) );
+                    emisor.enviarT(ticket, pAS);
+                    
+                    System.out.println("AS ha finalizado su trabajo.");
                 }
                 else{
                     System.out.println("No se concedieron permisos.");

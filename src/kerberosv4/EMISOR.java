@@ -13,24 +13,25 @@ public class EMISOR{
     public EMISOR(){
     }
 
-    public void enviarS(String ip, String p, String msj){
+    public void enviarS(String p, String msj){
         try{
-            InetAddress receptor = InetAddress.getByName(ip);
-            int puerto = Integer.parseInt(p);
-            Socket socketE = new Socket(receptor, puerto);
-            OutputStream salida = socketE.getOutputStream();
-            PrintWriter salidaS = new PrintWriter(new OutputStreamWriter(salida));
-            salidaS.println(msj);
-            salidaS.flush();
-            salida.close();
-            socketE.close();
+            int numPuerto = Integer.parseInt(p);
+            String mensaje = msj;
+            ServerSocket socketConexion = new ServerSocket(numPuerto);
+            Socket socketDatos = socketConexion.accept();           
+            OutputStream flujoSalida = socketDatos.getOutputStream();
+            PrintWriter salidaSocket = new PrintWriter(new OutputStreamWriter(flujoSalida));
+            salidaSocket.println(mensaje);
+            salidaSocket.flush();
+            socketDatos.close();
+            socketConexion.close();
         }
         catch(Exception ex){
             ex.printStackTrace();
         }
     }
     
-    public void enviarT(TicketC ticket, String ip, String p){
+    public void enviarT(TicketC ticket, String p){
         try{
             String[] flujo = new String[6];
             flujo[0] = ticket.getcS();
@@ -39,27 +40,25 @@ public class EMISOR{
             flujo[3] = ticket.getIdTGSoV();
             flujo[4] = ticket.gettS();
             flujo[5] = ticket.getLifeTime();
-            
             for (int i = 0; i < flujo.length; i++) {
-                enviarS(ip, p, flujo[i]);
+                enviarS(p, flujo[i]);
             }
-
         }
         catch(Exception ex){
             ex.printStackTrace();
         }
     }
     
-    public void enviarA(AutenticadorC aut, String ip, String p){
+    public void enviarA(AutenticadorC aut, String p){
         try{
             
             String[] flujo = new String[3];
             flujo[0] = aut.idC;
             flujo[1] = aut.getAdC();
-            flujo[3] = aut.gettS();
+            flujo[2] = aut.gettS();
             
             for (int i = 0; i < flujo.length; i++) {
-                enviarS(ip, p, flujo[i]);
+                enviarS(p, flujo[i]);
             }
             
         }

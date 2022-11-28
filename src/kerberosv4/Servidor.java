@@ -10,7 +10,7 @@ public class Servidor {
         
         String[] args = new String[4];
         for (int i = 0; i < 3; i++) {
-            args[i] = "192.168.10.101";
+            args[i] = "10.226.164.86";
         }
         
         try{
@@ -38,7 +38,7 @@ public class Servidor {
                 
                 final String cSTGSString = "L0NPC0leCEM=";
                 SecretKey cSTGS = null;
-                final String cSSString = "PqglfyUZ1TQ=";
+                final String cSSString = "vAfZAimu8hk=";
                 SecretKey cSS = null;
                 SecretKey cS_CTGS = null;
                 SecretKey cS_CS = null;
@@ -66,8 +66,8 @@ public class Servidor {
                 
                 cSS = genCS.cS(cSSString);
                 
-                ticket = receptor.recibirT(pS);
-                aut = receptor.recibirA(pS);
+                ticket = receptor.recibirT(ipC, pS);
+                aut = receptor.recibirA(ipC, pS);
                 
                 ticket = ticketG.geneByDesc(ticket, cSS);
                 cS_CS = genCS.cS( ticket.getcS() );
@@ -84,8 +84,8 @@ public class Servidor {
                     tLString = cif.Principal(cS_CS, tLife.toString());
                     String msj = process();
                     
-                    emisor.enviarS(ipC, pS, tLString);
-                    emisor.enviarS(ipC, pS, msj);
+                    emisor.enviarS(pS, tLString);
+                    emisor.enviarS(pS, msj);
                 }
             }
             System.out.println("Servidor finalizado");
