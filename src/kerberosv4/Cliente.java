@@ -32,6 +32,7 @@ public class Cliente {
                 
                 
                 final String cSCString = "aIZUAB7ywP2W1H3EB2ciT9bpgA8xyLNT";
+                SecretKey cSC = null;
                 SecretKey cS_CTGS = null;
                 SecretKey cS_CS = null;
                 
@@ -42,7 +43,6 @@ public class Cliente {
                 String idSR = null;
                 
                 
-                SecretKey cSC = null;
                 Cifrador cif = new Cifrador();
                 Descifrador descif = new Descifrador();
                 GeneradorCS genCS = new GeneradorCS();

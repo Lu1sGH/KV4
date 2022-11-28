@@ -12,26 +12,24 @@ public class TicketG {
     public TicketG() {
     }
     
-    public TicketC generador(String pQ, SecretKey cS){
-        
-        switch(pQ){
-            case "TGS":
-                return ticket;
-            case "V":
-                return ticket;
-        }
-        
-        return null;
+    public TicketC geneByCif(SecretKey cS, TicketC tickt) throws Exception{
+        this.ticket.setcS( this.cif.Principal(cS, tickt.getcS()) );
+        this.ticket.setIdC( this.cif.Principal(cS, tickt.getcS()) );
+        this.ticket.setAdC( this.cif.Principal(cS, tickt.getcS()) );
+        this.ticket.setIdTGSoV( this.cif.Principal(cS, tickt.getcS()) );
+        this.ticket.settS( this.cif.Principal(cS, tickt.getcS()) );
+        this.ticket.setLifeTime( this.cif.Principal(cS, tickt.getcS()) );
+        return this.ticket;
     }
     
     public TicketC geneByDesc(TicketC ticketCif, SecretKey cS) throws Exception{
-        ticket.setcS( desc.Principal(cS, ticketCif.getcS()) ); 
-        ticket.setIdC( desc.Principal(cS, ticketCif.getIdC()) );
-        ticket.setAdC( desc.Principal(cS, ticketCif.getAdC()) );
-        ticket.setIdTGSoV( desc.Principal(cS, ticketCif.getIdTGSoV()) );
-        ticket.settS( desc.Principal(cS, ticketCif.gettS()) );
-        ticket.setLifeTime( desc.Principal(cS, ticketCif.getLifeTime()) );
-        return ticket;
+        this.ticket.setcS( this.desc.Principal(cS, ticketCif.getcS()) ); 
+        this.ticket.setIdC( this.desc.Principal(cS, ticketCif.getIdC()) );
+        this.ticket.setAdC( this.desc.Principal(cS, ticketCif.getAdC()) );
+        this.ticket.setIdTGSoV( this.desc.Principal(cS, ticketCif.getIdTGSoV()) );
+        this.ticket.settS( this.desc.Principal(cS, ticketCif.gettS()) );
+        this.ticket.setLifeTime( this.desc.Principal(cS, ticketCif.getLifeTime()) );
+        return this.ticket;
     }
     
 }
